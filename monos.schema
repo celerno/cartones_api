@@ -1,0 +1,1 @@
+yo mongoose:schema "carton|title:String,monero:String,original:String,fixed:String,min:String,references:[{link:String,medio:String,brief:String}]"
