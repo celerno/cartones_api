@@ -18,11 +18,10 @@ module.exports = function(app) {
   // GET
   api.carton = function (req, res) {
     var id = req.params.id;
-    Carton.findOne({ '_id': id }, function(err, data) {
+    Carton.findById(id, function(err, carton) {
       if (err) {
         res.json(404, err);
       } else {
-        res.json(200, {carton: data});
       }
     });
   };
@@ -44,6 +43,28 @@ module.exports = function(app) {
         return res.json(201, carton.toObject());
       } else {
          return res.json(500, err);
+      }
+    });
+  };
+
+  // POST
+  api.addComentario = function (req, res) {
+   var id = req.params.id
+     Carton.findById(id, function(err, carton) {
+      if (err) {
+        res.json(404, err);
+      } else {
+        carton.comentario.insert(req.body.carton["comentario"]);
+        carton.save(function (err) {
+                if (!err) {
+                  console.log("updated post");
+                  return res.json(200, post.toObject());
+                } else {
+                 return res.json(500, err);
+                }
+                return res.json(post);
+              });
+         res.json(200, {carton: carton});
       }
     });
   };
@@ -106,6 +127,7 @@ module.exports = function(app) {
   app.get('/api/cartones', api.cartones);
   app.get('/api/carton/:id', api.carton);
   app.post('/api/carton', api.addCarton);
-  //app.put('/api/post/:id', api.editCarton);
+  app.post('/api/comentario/:id', api.addComentario);
+      //app.put('/api/post/:id', api.editCarton);
   app.delete('/api/carton/:id', api.deleteCarton);
 };
